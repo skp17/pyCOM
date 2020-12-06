@@ -10,6 +10,7 @@ from PyQt5.QtCore import QTimer
 from PyQt5 import QtCore  # TODO look into uic5 conversion
 
 # Homemade modules
+import app_utils
 from UI.ui_mainwindow import Ui_MainWindow
 from model import PortTableModel
 
@@ -26,10 +27,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tableView.setModel(self.tableModel) # Set model to table view
         self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-        self.display_ports()
+        # Connect timer to display function
+        self._timer.timeout.connect(self.display_ports)
+
+        self._timer.start(1000)  # scan every second
 
     def display_ports(self):
-        self._ports = [port.portName() for port in QtSerialPort.QSerialPortInfo.availablePorts()]
+        # self._ports = [port.portName() for port in QtSerialPort.QSerialPortInfo.availablePorts()]
+        self._ports = app_utils.get_serial_ports()
         self.tableModel.ports = self._ports
         self.tableModel.layoutChanged.emit()
 

@@ -1,0 +1,3 @@
+- Display com port current parameters such as baudrate, # of stopbits, etc.
+- Show "Available" in green and "Unavailable" in red.
+- Center columns

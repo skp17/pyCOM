@@ -8,17 +8,17 @@ class PortTableModel(QAbstractTableModel):
 
     def data(self, index, role):
         if role == Qt.DisplayRole:
-            port = self.ports[index.row()]
-            return port
+            data = self.ports[index.row()][index.column()]
+            return data
 
     def rowCount(self, index):
         return len(self.ports)
 
     def columnCount(self, index):
-        return 1
+        return 2
 
     def headerData(self, section, orientation, role):
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
-                return ["Port"][section]
+                return ["Port", "Status"][section]
 
