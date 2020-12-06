@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QAbstractTableModel
 
+
 class PortTableModel(QAbstractTableModel):
     def __init__(self, ports=None):
         QAbstractTableModel.__init__(self)
@@ -21,4 +22,3 @@ class PortTableModel(QAbstractTableModel):
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 return ["Port", "Status"][section]
-
