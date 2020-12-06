@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 from PyQt5.QtCore import QAbstractTableModel
 
 
@@ -11,6 +12,13 @@ class PortTableModel(QAbstractTableModel):
         if role == Qt.DisplayRole:
             data = self.ports[index.row()][index.column()]
             return data
+
+        if role == Qt.TextColorRole and index.column() == 1:
+            status = self.ports[index.row()][index.column()]
+            if status == 'Available':
+                return QColor(Qt.darkGreen)
+            else:
+                return QColor(Qt.red)
 
     def rowCount(self, index):
         return len(self.ports)
