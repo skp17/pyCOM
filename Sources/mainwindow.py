@@ -6,11 +6,11 @@ import sys
 
 # Third-party modules
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
-from PyQt5 import QtSerialPort
+from PyQt5 import QtSerialPort, QtGui
 from PyQt5.QtCore import QTimer
-from PyQt5 import QtCore  # TODO look into uic5 conversion
 
 # Homemade modules
+import resources
 from UI.ui_mainwindow import Ui_MainWindow
 from model import PortTableModel
 
@@ -23,6 +23,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._timer = QTimer(self)
         self._ports = []
         self.tableModel = PortTableModel()
+        self.setWindowIcon(QtGui.QIcon(":/icons/serial_port.ico"))
 
         self.tableView.setModel(self.tableModel)  # Set model to table view
         self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -30,14 +31,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._timer.timeout.connect(self.display_ports)  # Connect timer to display function
         self._timer.start(1000)  # scan com ports every second
 
-    def display_ports(self):
-        self._ports = []
-        for port in QtSerialPort.QSerialPortInfo.availablePorts():
-            status = 'Unavailable' if port.isBusy() else "Available"
-            self._ports.append((port.portName(), status))
+        self.tableView.clicked.connect(self.display_port_info)
 
+    def display_ports(self):
+        self._ports = [port for port in QtSerialPort.QSerialPortInfo.availablePorts()]
         self.tableModel.ports = self._ports
         self.tableModel.layoutChanged.emit()
+
+    def display_port_info(self, index):
+        port = self.tableModel.ports[index.row()]
+        self.txtPortInfo.setPlainText(f'Port name: {port.portName()}')
+        self.txtPortInfo.appendPlainText(f'System Location: {port.systemLocation()}')
+        self.txtPortInfo.appendPlainText(f'Description: {port.description()}')
+        self.txtPortInfo.appendPlainText(f'Manufacturer: {port.manufacturer()}')
+        self.txtPortInfo.appendPlainText(f'Product Identifier: {port.productIdentifier()}')
+        self.txtPortInfo.appendPlainText(f'Vendor Identifier: {port.vendorIdentifier()}')
 
 
 if __name__ == '__main__':

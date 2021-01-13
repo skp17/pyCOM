@@ -1,0 +1,6 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="icons">
+        <file alias="serial_port.ico">Icons/serial_port_icon_32.ico</file>
+    </qresource>
+</RCC>

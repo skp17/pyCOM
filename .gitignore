@@ -1,7 +1,10 @@
 .idea/
 Scripts/
 Lib/
+build/
+dist/
 
 pyvenv.cfg
 *.pyc
+*.txt
 

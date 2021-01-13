@@ -10,15 +10,19 @@ class PortTableModel(QAbstractTableModel):
 
     def data(self, index, role):
         if role == Qt.DisplayRole:
-            data = self.ports[index.row()][index.column()]
-            return data
-
-        if role == Qt.TextColorRole and index.column() == 1:
-            status = self.ports[index.row()][index.column()]
-            if status == 'Available':
-                return QColor(Qt.darkGreen)
+            port = self.ports[index.row()]
+            if index.column() == 0:
+                return port.portName()
             else:
+                status = 'Unavailable' if port.isBusy() else "Available"
+                return status
+
+        if role == Qt.ForegroundRole and index.column() == 1:
+            port = self.ports[index.row()]
+            if port.isBusy():
                 return QColor(Qt.red)
+            else:
+                return QColor(Qt.darkGreen)
 
     def rowCount(self, index):
         return len(self.ports)

@@ -1,3 +1,5 @@
 - Display com port current parameters such as baudrate, # of stopbits, etc.
-- Show "Available" in green and "Unavailable" in red.
-- Center columns
+- Show "Available" in green and "Unavailable" in red. (done)
+- Center columns (done)
+- Create pyinstaller .spec file (done)
+- Add icons using Qt resource file (done)
