@@ -1,3 +1,4 @@
+- Display "No ports found" if no serial ports are available
 - Display com port current parameters such as baudrate, # of stopbits, etc.
 - Show "Available" in green and "Unavailable" in red. (done)
 - Center columns (done)
