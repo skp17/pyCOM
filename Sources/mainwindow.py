@@ -48,8 +48,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.txtPortInfo.appendPlainText(f'Vendor Identifier: {port.vendorIdentifier()}')
 
 
-if __name__ == '__main__':
+def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     app.exec_()
+
+
+if __name__ == '__main__':
+    main()

@@ -4,6 +4,7 @@ Scripts/
 Lib/
 build/
 dist/
+venv/
 
 pyvenv.cfg
 *.pyc
