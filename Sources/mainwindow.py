@@ -5,14 +5,14 @@ __version__ = "0.0.1"
 import sys
 
 # Third-party modules
-from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from PyQt5 import QtSerialPort, QtGui
 from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QApplication, QHeaderView, QMainWindow
 
 # Homemade modules
 import resources
-from UI.ui_mainwindow import Ui_MainWindow
 from model import PortTableModel
+from UI.ui_mainwindow import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):

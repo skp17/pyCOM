@@ -4,8 +4,6 @@ block_cipher = None
 
 
 a = Analysis(['Sources\\mainwindow.py'],
-             pathex=['D:\\Users\\Dell\\GitHub\\pycom',
-                'Lib/site-packages'],
              binaries=[],
              datas=[],
              hiddenimports=[],
