@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyqt5 = "*"
+pyserial = "*"
+pywin32-ctypes = "*"
+
+[dev-packages]
+pyinstaller = "*"
+pyqt5-tools = "*"
+pyqt5-stubs = "*"
+pyqt5designer = "*"
+
+[requires]
+python_version = "3.8"
