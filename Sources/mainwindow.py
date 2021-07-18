@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QApplication, QHeaderView, QMainWindow
 # Homemade modules
 import resources
 from model import PortTableModel
-from UI.ui_mainwindow import Ui_MainWindow
+from ui_mainwindow import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):

@@ -4,6 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['Sources\\mainwindow.py'],
+             pathex=['UI'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -29,5 +30,5 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False,
+          console=True,
           icon='./Icons/serial_port_icon_96.ico' )
