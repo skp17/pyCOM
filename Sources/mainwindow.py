@@ -1,5 +1,5 @@
 __author__ = "Steven Peters"
-__version__ = "0.0.1"
+__version__ = "1.0.0"
 
 # Standard libraries
 import sys
@@ -7,7 +7,7 @@ import sys
 # Third-party modules
 from PyQt5 import QtSerialPort, QtGui
 from PyQt5.QtCore import QFile, QTimer, QTextStream
-from PyQt5.QtWidgets import QActionGroup, QApplication, QHeaderView, QMainWindow
+from PyQt5.QtWidgets import QActionGroup, QApplication, QHeaderView, QMainWindow, QMessageBox
 
 # Homemade modules
 import breeze_resources
@@ -35,10 +35,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.groupTheme.setExclusive(True)
         self.groupTheme.triggered.connect(self.change_theme)
 
+        self.tableView.clicked.connect(self.display_port_info)
+        self.actionAbout.triggered.connect(self.show_about_dialog)
+
         self._timer.timeout.connect(self.display_ports)  # Connect timer to display function
         self._timer.start(1000)  # scan com ports every second
-
-        self.tableView.clicked.connect(self.display_port_info)
 
     def change_theme(self, action):
         if action == self.actionLight:
@@ -59,6 +60,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.txtPortInfo.appendPlainText(f'Manufacturer: {port.manufacturer()}')
         self.txtPortInfo.appendPlainText(f'Product Identifier: {port.productIdentifier()}')
         self.txtPortInfo.appendPlainText(f'Vendor Identifier: {port.vendorIdentifier()}')
+
+    def show_about_dialog(self):
+        QMessageBox.about(self, 'About', f'Author: {__author__}\nVersion {__version__}')
 
 
 def toggle_stylesheet(path):
