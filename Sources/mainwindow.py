@@ -15,6 +15,11 @@ import resources
 from model import PortTableModel
 from ui_mainwindow import Ui_MainWindow
 
+# Version
+MAJOR = int(__version__.split('.')[0])
+MINOR = int(__version__.split('.')[1])
+REV = int(__version__.split('.')[2])
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
