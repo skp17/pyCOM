@@ -1,19 +1,19 @@
 __author__ = "Steven Peters"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 # Standard libraries
 import sys
 
 # Third-party modules
 from PyQt5 import QtCore, QtGui, QtSerialPort, uic
-from PyQt5.QtCore import QFile, QTextStream, QTimer
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QActionGroup, QApplication, QHeaderView, QMainWindow, QMessageBox
 
 # Homemade modules
 import breeze_resources  # used for dark theme
 import resources  # used to import icons
 from model import PortTableModel
-# from ui_mainwindow import Ui_MainWindow
+from themes import toggle_stylesheet
 
 BUNDLE = True  # used for debugging
 ##############################
@@ -86,26 +86,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def show_about_dialog(self):
         QMessageBox.about(self, 'About', f'Author: {__author__}\nVersion {__version__}')
-
-
-def toggle_stylesheet(path):
-    """
-    Toggle the stylesheet to use the desired path in the Qt resource
-    system (prefixed by `:/`) or generically (a path to a file on
-    system).
-
-    :path:      A full path to a resource or file on system
-    """
-
-    # Get the QApplication instance, or crash if not set
-    app = QApplication.instance()
-    if app is None:
-        raise RuntimeError("No Qt Application found.")
-
-    file = QFile(path)
-    file.open(QFile.ReadOnly | QFile.Text)
-    stream = QTextStream(file)
-    app.setStyleSheet(stream.readAll())
 
 
 def main():
