@@ -1,12 +1,11 @@
 __author__ = "Steven Peters"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 # Standard libraries
 import sys
 
 # Third-party modules
 from PyQt5 import QtCore, QtGui, QtSerialPort, uic
-from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QActionGroup, QApplication, QHeaderView, QMainWindow, QMessageBox
 
 # Homemade modules
@@ -44,7 +43,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        self._timer = QTimer(self)
         self._ports = []
         self.tableModel = PortTableModel()
         self.setWindowIcon(QtGui.QIcon(":/icons/serial_port.ico"))
@@ -60,9 +58,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.tableView.clicked.connect(self.display_port_info)
         self.actionAbout.triggered.connect(self.show_about_dialog)
+        self.actionRefresh.triggered.connect(self.display_ports)
 
-        self._timer.timeout.connect(self.display_ports)  # Connect timer to display function
-        self._timer.start(1000)  # scan com ports every second
+    def changeEvent(self, event: QtCore.QEvent):
+        super().changeEvent(event)
+        # The list of com ports will refresh every time the window gains focus
+        if event.type() == QtCore.QEvent.ActivationChange and self.isActiveWindow():
+            self.display_ports()
 
     def change_theme(self, action):
         if action == self.actionLight:
