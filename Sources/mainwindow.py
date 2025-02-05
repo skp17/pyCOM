@@ -1,19 +1,37 @@
 __author__ = "Steven Peters"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 # Standard libraries
 import sys
 
 # Third-party modules
-from PyQt5 import QtSerialPort, QtGui
-from PyQt5.QtCore import QFile, QTimer, QTextStream
+from PyQt5 import QtCore, QtGui, QtSerialPort, uic
+from PyQt5.QtCore import QFile, QTextStream, QTimer
 from PyQt5.QtWidgets import QActionGroup, QApplication, QHeaderView, QMainWindow, QMessageBox
 
 # Homemade modules
-import breeze_resources
-import resources
+import breeze_resources  # used for dark theme
+import resources  # used to import icons
 from model import PortTableModel
-from ui_mainwindow import Ui_MainWindow
+# from ui_mainwindow import Ui_MainWindow
+
+BUNDLE = True  # used for debugging
+##############################
+if BUNDLE:
+    from ui_mainwindow import Ui_MainWindow
+else:
+    qtCreatorFileValueMainWindow = r'../UI/mainwindow.ui'
+    Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFileValueMainWindow)
+##############################
+
+
+# Decrease high DPI impact on the GUI
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
 
 # Version
 MAJOR = int(__version__.split('.')[0])
@@ -53,7 +71,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             toggle_stylesheet(":/dark/stylesheet.qss")
 
     def display_ports(self):
-        self._ports = [port for port in QtSerialPort.QSerialPortInfo.availablePorts()]
+        self._ports = [port for port in QtSerialPort.QSerialPortInfo.availablePorts()]  # Run inside separate thread
         self.tableModel.ports = self._ports
         self.tableModel.layoutChanged.emit()
 
