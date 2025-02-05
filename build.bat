@@ -5,12 +5,12 @@
 :: use command "build help" to show all commands
 
 @ECHO OFF
-IF "%1"=="all" (
+IF "%1"=="" (
     SET "ALL=true"
     GOTO Clean
     ) ELSE (
         SET "ALL=false"
-        IF "%1"=="" GOTO Executable
+        IF "%1"=="exe" GOTO Executable
         IF "%1"=="ui" GOTO UI
         IF "%1"=="clean" GOTO Clean
         IF "%1"=="help" GOTO Help
@@ -44,8 +44,8 @@ pyinstaller pyCOM.spec
 EXIT /b
 
 :Help
-ECHO use command "build all" to clean files, convert .ui files and create .exe
-ECHO use command "build" to create executable
+ECHO use command "build" to clean files, convert .ui files and create .exe
+ECHO use command "build exe" to create executable
 ECHO use command "build ui" to convert .ui files into .py files
 ECHO use command "build clean" to delete dist/ and build/ directories
 ECHO use command "build help" to show all commands
