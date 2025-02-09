@@ -1,5 +1,7 @@
+- Add logging
 - Save parameters (theme) in QSettings
-- Display "No ports found" if no serial ports are available
+- Change how dark theme is imported
+- Display "No ports found" if no serial ports are available (done)
 - Display com port current parameters such as baudrate, # of stopbits, etc.
 - Show "Available" in green and "Unavailable" in red. (done)
 - Center columns (done)
