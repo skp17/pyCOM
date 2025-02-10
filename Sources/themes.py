@@ -1,10 +1,22 @@
 
+# Standard libraries
+from enum import Enum
+
 # Third-party modules
 from PyQt5.QtCore import QFile, QTextStream
 from PyQt5.QtWidgets import QApplication
 
 
-def toggle_stylesheet(path):
+class Theme(Enum):
+    Dark = 0
+    Light = 1
+
+Stylesheet = {
+    Theme.Light: "",
+    Theme.Dark: ":/dark/stylesheet.qss"
+}
+
+def apply_theme(theme: Theme):
     """
     Toggle the stylesheet to use the desired path in the Qt resource
     system (prefixed by `:/`) or generically (a path to a file on
@@ -18,6 +30,7 @@ def toggle_stylesheet(path):
     if app is None:
         raise RuntimeError("No Qt Application found.")
 
+    path = Stylesheet.get(theme, "")
     file = QFile(path)
     file.open(QFile.ReadOnly | QFile.Text)
     stream = QTextStream(file)

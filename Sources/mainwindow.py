@@ -1,5 +1,5 @@
 __author__ = "Steven Peters"
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 # Standard libraries
 import sys
@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QActionGroup, QApplication, QHeaderView, QMainWindow
 import breeze_resources  # used for dark theme
 import resources  # used to import icons
 from model import PortTableModel
-from themes import toggle_stylesheet
+from themes import apply_theme, Theme
 
 BUNDLE = True  # used for debugging
 ##############################
@@ -78,18 +78,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.display_ports()
 
     def eventFilter(self, obj: QtCore.QObject, event: QtCore.QEvent):
-        """
-        Update label position when viewport resizes
-        """
+        # Update label position when viewport resizes
         if obj == self.tableView.viewport() and event.type() == event.Resize:
             self.adjust_empty_label()
         return super().eventFilter(obj, event)
 
     def change_theme(self, action):
         if action == self.actionLight:
-            toggle_stylesheet(":/light.qss")
+            apply_theme(Theme.Light)
         elif action == self.actionDark:
-            toggle_stylesheet(":/dark/stylesheet.qss")
+            apply_theme(Theme.Dark)
 
     def adjust_empty_label(self):
         if self.tableModel.ports:
