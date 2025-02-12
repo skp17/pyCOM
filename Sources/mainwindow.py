@@ -1,5 +1,8 @@
 __author__ = "Steven Peters"
-__version__ = "1.0.4"
+__organization__ = "Personal"
+__program_name__ = "pyCOM"
+__copyright__ = ""
+__version__ = "1.0.5"
 
 # Standard libraries
 import sys
@@ -45,10 +48,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self._ports = []  # Todo: no need for this variable
         self.tableModel = PortTableModel()
+        self.setWindowTitle(__program_name__)
         self.setWindowIcon(QtGui.QIcon(":/icons/serial_port.ico"))
+
+        # Set information that will be used by QSettings
+        QtCore.QCoreApplication.setOrganizationName(__organization__)
+        QtCore.QCoreApplication.setApplicationName(__program_name__)
 
         self.tableView.setModel(self.tableModel)  # Set model to table view
         self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        self.currentTheme = Theme.Light
 
         # Group the theme buttons
         self.groupTheme = QActionGroup(self.menuSettings)
@@ -83,10 +93,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.adjust_empty_label()
         return super().eventFilter(obj, event)
 
-    def change_theme(self, action):
-        if action == self.actionLight:
+    def showEvent(self, event: QtGui.QShowEvent):
+        self.read_settings()
+        super().showEvent(event)
+
+    def closeEvent(self, event: QtGui.QCloseEvent):
+        self.write_settings()
+        super().closeEvent(event)
+
+    def change_theme(self):
+        if self.actionLight.isChecked():
+            self.currentTheme = Theme.Light
             apply_theme(Theme.Light)
-        elif action == self.actionDark:
+        elif self.actionDark.isChecked():
+            self.currentTheme = Theme.Dark
             apply_theme(Theme.Dark)
 
     def adjust_empty_label(self):
@@ -113,6 +133,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def show_about_dialog(self):
         QMessageBox.about(self, 'About', f'Author: {__author__}\nVersion {__version__}')
+
+    def read_settings(self):
+        settings = QtCore.QSettings()
+
+        size = settings.value("size", defaultValue=self.size())
+        show_maximized = settings.value("showMaximized", defaultValue=self.isMaximized(), type=bool)
+        theme = settings.value("theme", defaultValue=self.currentTheme.value, type=int)
+
+        # Set window size
+        if show_maximized:
+            self.showMaximized()
+        else:
+            self.resize(size)
+
+        # Theme
+        try:
+            theme = Theme(theme)
+        except ValueError:
+            theme = Theme.Light  # default
+
+        if theme == Theme.Dark:
+            self.actionDark.setChecked(True)
+        else:
+            self.actionLight.setChecked(True)
+
+        self.change_theme()
+
+    def write_settings(self):
+        settings = QtCore.QSettings()
+        settings.setValue("size", self.size())
+        settings.setValue("showMaximized", self.isMaximized())
+        settings.setValue("theme", self.currentTheme.value)  # save as int
 
 
 def main():
